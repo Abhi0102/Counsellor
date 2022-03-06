@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Consellor App API
+  description: An API created using node.js to handle operations helping people to connect with counsellors
+  version: 1.0.1
+  contact:
+    email: abhishek1sharma14.1998@gmail.com
+
+servers:
+  - url: "{protocol}://localhost:8000/api/{version}"
+    description: Local host initial URL
+    variables:
+      version:
+        enum:
+          - v1
+        default: v1
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /signup:
+    post:
+      tags:
+        - User Related Operations
+      summary: User Can Signup using this path
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                dob:
+                  type: string
+                  format: date
+                qualification:
+                  type: string
+                aboutme:
+                  type: string
+                phno:
+                  type: string
+                role:
+                  type: string
+                photo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+
+  /login:
+    /signup:
+    post:
+      tags:
+        - User Related Operations
+      summary: User Can Login using this path
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string

@@ -11,7 +11,7 @@ const cookietoken = (user, res) => {
   res
     .status(200)
     .cookie(process.env.COOKIE_TOKEN_NAME, token, options)
-    .json({ success: true, token, user });
+    .json({ success: true, token });
 };
 
 module.exports = cookietoken;
