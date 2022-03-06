@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const { JsonWebTokenError } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const userSchema = mongoose.Schema(
@@ -78,7 +78,7 @@ userSchema.methods.isPasswordValid = async function (enteredPassword) {
 // JWT Token
 
 userSchema.methods.getJwtToken = function () {
-  return JsonWebTokenError.sign(
+  return jwt.sign(
     {
       id: this._id,
       name: this.name,
