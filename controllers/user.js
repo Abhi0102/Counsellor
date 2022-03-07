@@ -72,7 +72,12 @@ exports.login = BigPromise(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new Error("Email & Password are required."));
+    return next(
+      res.status(422).json({
+        success: false,
+        message: "Email & Password are required.",
+      })
+    );
   }
 
   // Check User in DB
@@ -82,7 +87,12 @@ exports.login = BigPromise(async (req, res, next) => {
   // If user not found
 
   if (!user) {
-    return next(new Error("User is not registered. Please check email id."));
+    return next(
+      res.status(422).json({
+        success: false,
+        message: "User Not Registered. Please check Email Id.",
+      })
+    );
   }
 
   // If user Found - Compare passwords
@@ -92,12 +102,17 @@ exports.login = BigPromise(async (req, res, next) => {
   // If passoword does not match
 
   if (!isValidPassword) {
-    return next(new Error("Password is incorrect."));
+    return next(
+      res.status(422).json({
+        success: false,
+        message: "Password is incorrect.",
+      })
+    );
   }
 
   // If Password is valid
 
   cookietoken(user, res);
 
-  res.status(200).json({ success: true });
+  // res.status(200).json({ success: true });
 });
