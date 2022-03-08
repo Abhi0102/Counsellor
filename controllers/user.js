@@ -115,3 +115,12 @@ exports.login = BigPromise(async (req, res, next) => {
 
   // res.status(200).json({ success: true });
 });
+
+exports.getUserDetail = BigPromise(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});

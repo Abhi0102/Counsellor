@@ -1,7 +1,7 @@
 import { useRoutes, Navigate } from "react-router-dom";
-import Login from "./component/Login";
-import Home from "./component/Home";
-import Signup from "./component/Signup";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import Signup from "./components/Signup";
 
 export default function Router() {
   return useRoutes([

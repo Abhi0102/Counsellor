@@ -8,10 +8,11 @@ const cookietoken = (user, res) => {
     httpOnly: true,
   };
 
+  user.password = undefined;
   res
     .status(200)
     .cookie(process.env.COOKIE_TOKEN_NAME, token, options)
-    .json({ success: true, token });
+    .json({ success: true, user });
 };
 
 module.exports = cookietoken;

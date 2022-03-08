@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 // MUI Imports
 import {
@@ -13,21 +14,16 @@ import { Box } from "@mui/system";
 
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { login } from "../actions/user";
 
 function Login(props) {
   // Handling For Submit
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    axios
-      .post("/api/v1/login", data)
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err.response.data);
-        setError(err.response.data.message);
-      });
+    dispatch(login(data));
   };
   return (
     <Grid container justifyContent="center">
