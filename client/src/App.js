@@ -1,9 +1,14 @@
-import Login from "./component/Login";
+import Navbar from "./component/Navbar";
+import Router from "./routes";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <Login />
+      <BrowserRouter>
+        <Navbar />
+        <Router />
+      </BrowserRouter>
     </>
   );
 }

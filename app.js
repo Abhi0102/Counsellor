@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-
+const errorHandler = require("./middlewares/errorHandler");
 const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -31,5 +31,7 @@ const user = require("./routes/user");
 //Route Middleware
 
 app.use("/api/v1", user);
+
+app.use(errorHandler);
 
 module.exports = app;

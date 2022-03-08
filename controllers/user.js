@@ -20,7 +20,11 @@ exports.signup = BigPromise(async (req, res, next) => {
     !role ||
     !req.files
   ) {
-    return next(new Error("Required Details are missing."));
+    return next(
+      new Error(
+        "Required Details are missing. Make sure you have selected profile pic too."
+      )
+    );
   }
 
   //  Extracting Photo detail
@@ -48,8 +52,6 @@ exports.signup = BigPromise(async (req, res, next) => {
 
   const picUploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
     folder: "counsellorUsers",
-    width: 150,
-    crop: "scale",
   });
 
   // Adding Photo Path to user
@@ -73,10 +75,11 @@ exports.login = BigPromise(async (req, res, next) => {
 
   if (!email || !password) {
     return next(
-      res.status(422).json({
-        success: false,
-        message: "Email & Password are required.",
-      })
+      new Error("Email & Password are required.")
+      // res.status(422).json({
+      //   success: false,
+      //   message: "Email & Password are required.",
+      // })
     );
   }
 
@@ -87,12 +90,7 @@ exports.login = BigPromise(async (req, res, next) => {
   // If user not found
 
   if (!user) {
-    return next(
-      res.status(422).json({
-        success: false,
-        message: "User Not Registered. Please check Email Id.",
-      })
-    );
+    return next(new Error("User Not Registered. Please check Email Id."));
   }
 
   // If user Found - Compare passwords
@@ -103,10 +101,11 @@ exports.login = BigPromise(async (req, res, next) => {
 
   if (!isValidPassword) {
     return next(
-      res.status(422).json({
-        success: false,
-        message: "Password is incorrect.",
-      })
+      new Error("Password is incorrect.")
+      // res.status(422).json({
+      //   success: false,
+      //   message: "Password is incorrect.",
+      // })
     );
   }
 

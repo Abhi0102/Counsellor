@@ -7,6 +7,7 @@ Router.route("/signup").post(signup);
 
 Router.route("/testdata").post(function (req, res) {
   console.log(req.body);
+  console.log(req.files);
   res.status(200).json({ success: true, data: req.body });
 });
 

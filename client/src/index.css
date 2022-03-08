@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.a-title {
+  text-decoration: none;
+  color: white;
+}
+.a-neutral {
+  text-decoration: none;
+  color: black;
+}

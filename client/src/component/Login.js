@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+// MUI Imports
 import {
   Card,
   CardContent,
@@ -7,8 +9,10 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-import axios from "axios";
 import { Box } from "@mui/system";
+
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Login(props) {
   // Handling For Submit
@@ -26,14 +30,8 @@ function Login(props) {
       });
   };
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justify="center"
-    >
-      <Grid item md={4} my={10}>
+    <Grid container justifyContent="center">
+      <Grid item md={6} my={10}>
         <Card elevation={4}>
           <CardHeader title="Login" />
           <CardContent>
@@ -65,6 +63,17 @@ function Login(props) {
                 fullWidth
               >
                 Login
+              </Button>
+
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/register"
+                sx={{ mb: 2 }}
+                fullWidth
+                color="error"
+              >
+                Register
               </Button>
             </Box>
           </CardContent>
