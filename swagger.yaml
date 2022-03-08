@@ -81,7 +81,6 @@ paths:
                     type: string
 
   /login:
-    /signup:
     post:
       tags:
         - User Related Operations
@@ -113,4 +112,66 @@ paths:
                   success:
                     type: boolean
                   token:
+                    type: string
+
+  /getuser:
+    get:
+      tags:
+        - User Related Operations
+      summary: Get User Details based on the cookie token. User first need to Login to get success response.
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      dob:
+                        type: string
+                        format: date
+                      qualification:
+                        type: string
+                      aboutme:
+                        type: string
+                      phno:
+                        type: number
+                      role:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      __v:
+                        type: number
+        "422":
+          description: Please Login first.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
                     type: string

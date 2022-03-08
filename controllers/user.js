@@ -76,10 +76,6 @@ exports.login = BigPromise(async (req, res, next) => {
   if (!email || !password) {
     return next(
       new Error("Email & Password are required.")
-      // res.status(422).json({
-      //   success: false,
-      //   message: "Email & Password are required.",
-      // })
     );
   }
 
@@ -102,10 +98,7 @@ exports.login = BigPromise(async (req, res, next) => {
   if (!isValidPassword) {
     return next(
       new Error("Password is incorrect.")
-      // res.status(422).json({
-      //   success: false,
-      //   message: "Password is incorrect.",
-      // })
+ 
     );
   }
 
@@ -113,7 +106,6 @@ exports.login = BigPromise(async (req, res, next) => {
 
   cookietoken(user, res);
 
-  // res.status(200).json({ success: true });
 });
 
 exports.getUserDetail = BigPromise(async (req, res, next) => {
