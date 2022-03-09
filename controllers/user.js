@@ -27,11 +27,23 @@ exports.signup = BigPromise(async (req, res, next) => {
     );
   }
 
+  const existingUser = await User.find({ email });
+
+  if (existingUser.length) {
+    return next(new Error("Email already exists."));
+  }
+
   //  Extracting Photo detail
 
   let file = req.files.photo;
 
-  // Creating New User
+  // Updloading to cloudinary
+
+  const picUploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
+    folder: "counsellorUsers",
+  });
+
+  // Creating User
 
   const user = await User.create({
     name,
@@ -42,28 +54,11 @@ exports.signup = BigPromise(async (req, res, next) => {
     aboutme,
     phno,
     role,
-    // photo: {
-    //   id: picUploadResult.public_id,
-    //   secure_url: picUploadResult.secure_url,
-    // },
+    photo: {
+      id: picUploadResult.public_id,
+      secure_url: picUploadResult.secure_url,
+    },
   });
-
-  // Updloading to cloudinary
-
-  const picUploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
-    folder: "counsellorUsers",
-  });
-
-  // Adding Photo Path to user
-
-  user.photo = {
-    id: picUploadResult.public_id,
-    secure_url: picUploadResult.secure_url,
-  };
-
-  // Saving user
-
-  user.save({ validateBeforeSave: false });
 
   // On Successful Signup
 
@@ -118,4 +113,54 @@ exports.getUserDetail = BigPromise(async (req, res, next) => {
     success: true,
     user,
   });
+});
+
+exports.updateProfilePic = BigPromise(async (req, res, next) => {
+  // If req.files not found
+  if (!req.files) {
+    return next(new Error("No Pic Found."));
+  }
+
+  // Extracting file
+  let file = req.files.photo;
+
+  //  Extracting photo id from injected user
+  const photo_id = req.user.photo.id;
+
+  // Deleting Previous Stored Photo
+  await cloudinary.uploader.destroy(photo_id);
+
+  // Uploading new photo
+  const picUploadResult = await cloudinary.uploader.upload(file.tempFilePath, {
+    folder: "counsellorUsers",
+  });
+
+  // New photo object
+  const photo = {
+    id: picUploadResult.public_id,
+    secure_url: picUploadResult.secure_url,
+  };
+
+  // Find User and update photo object
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { photo },
+    { new: true }
+  );
+
+  // Success Response
+  res.status(200).json({ success: true, photo: user.photo });
+});
+
+exports.updateUserDetail = BigPromise(async (req, res, next) => {
+  const newData = { ...req.body };
+
+  if (!newData) {
+    return next(new Error("Nothing to update."));
+  }
+  const user = await User.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({ success: true, user });
 });

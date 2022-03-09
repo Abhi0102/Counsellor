@@ -5,4 +5,6 @@ export const apiUrls = {
   logout: () => `${baseUrl}/logout`,
   getUser: () => `${baseUrl}/getuser`,
   testRoute: () => `${baseUrl}/testdata`,
+  uploadPhoto: () => `${baseUrl}/uploadphoto`,
+  updateUser: () => `${baseUrl}/updateuser`,
 };

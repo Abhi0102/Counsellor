@@ -110,7 +110,7 @@ export default function Navbar() {
       <MenuItem onClick={handleMenuClose}>
         Welcome {userDetail.name.split(" ")[0]}
       </MenuItem>
-      <MenuItem onClick={handleMenuClose} component={Link} to="/profile">
+      <MenuItem onClick={handleMenuClose} component={Link} to="/user/profile">
         View Profile
       </MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>

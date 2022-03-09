@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -13,36 +13,43 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/system";
+import { signup } from "../actions/user";
 
 const Input = styled("input")({
   display: "none",
 });
 
 function Signup(props) {
-  const [error, setError] = useState("");
+  const [internalError, setInternalError] = useState("");
   const [pic, setPic] = useState("");
+  const dispatch = useDispatch();
+  const { error, isLoggedIn } = useSelector((state) => state.user);
+
+  // Getting Location and navigate to handle routing if user is logged in
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(from, { replace: true });
+    }
+  }, [isLoggedIn]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
+    setInternalError("");
     const data = new FormData(event.currentTarget);
 
     if (data.get("password") !== data.get("confirmPassword")) {
-      setError("Password & Confirm Password does not matches.");
+      setInternalError("Password & Confirm Password does not matches.");
       return;
     }
 
-    axios
-      .post("/api/v1/signup", data)
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err.response.data);
-        setError(err.response.data.error);
-      });
+    dispatch(signup(data));
   };
 
   return (
@@ -97,6 +104,8 @@ function Signup(props) {
                 id="aboutme"
                 name="aboutme"
                 label="About Me"
+                multiline
+                rows={8}
                 fullWidth
               />
 
@@ -163,7 +172,7 @@ function Signup(props) {
               <br />
 
               <Typography variant="caption" color="error">
-                {error}
+                {internalError} &nbsp; {error}
               </Typography>
               <br />
               <Typography variant="caption" color="error">
