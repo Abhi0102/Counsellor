@@ -153,7 +153,12 @@ exports.updateProfilePic = BigPromise(async (req, res, next) => {
 });
 
 exports.updateUserDetail = BigPromise(async (req, res, next) => {
-  const newData = { ...req.body };
+  let newData = {};
+  for (let i in req.body) {
+    if (req.body[i]) {
+      newData[i] = req.body[i];
+    }
+  }
 
   if (!newData) {
     return next(new Error("Nothing to update."));
@@ -162,5 +167,7 @@ exports.updateUserDetail = BigPromise(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
+
   res.status(200).json({ success: true, user });
 });
+

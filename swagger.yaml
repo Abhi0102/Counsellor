@@ -77,8 +77,41 @@ paths:
                 properties:
                   success:
                     type: boolean
-                  token:
-                    type: string
+                  user:
+                    type: object
+                    properties:
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      dob:
+                        type: string
+                        format: date
+                      qualification:
+                        type: string
+                      aboutme:
+                        type: string
+                      phno:
+                        type: number
+                      role:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      __v:
+                        type: number
 
   /login:
     post:
@@ -111,7 +144,58 @@ paths:
                 properties:
                   success:
                     type: boolean
-                  token:
+                  user:
+                    type: object
+                    properties:
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      dob:
+                        type: string
+                        format: date
+                      qualification:
+                        type: string
+                      aboutme:
+                        type: string
+                      phno:
+                        type: number
+                      role:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      __v:
+                        type: number
+
+  /logout:
+    get:
+      tags:
+        - User Related Operations
+      summary: Logout User
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
                     type: string
 
   /getuser:
@@ -166,6 +250,127 @@ paths:
                         type: number
         "422":
           description: Please Login first.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /updateuser:
+    patch:
+      tags:
+        - User Related Operations
+      summary: Update User Details
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        # required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                dob:
+                  type: string
+                  format: date
+                qualification:
+                  type: string
+                aboutme:
+                  type: string
+                phno:
+                  type: string
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      dob:
+                        type: string
+                        format: date
+                      qualification:
+                        type: string
+                      aboutme:
+                        type: string
+                      phno:
+                        type: number
+                      role:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      __v:
+                        type: number
+
+  /uploadphoto:
+    patch:
+      tags:
+        - User Related Operations
+      summary: User Can Signup using this path
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  photo:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      secure_url:
+                        type: string
+        "422":
+          description: Unprocessable.
           content:
             application/json:
               schema:
