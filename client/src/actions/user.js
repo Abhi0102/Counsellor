@@ -3,9 +3,13 @@ import { apiUrls } from "../utils/apiUrls";
 import {
   LOGIN_FAILED,
   LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILED,
   GET_USER_DETAIL_SUCCESS,
+  GET_USER_DETAIL_FAILED,
 } from "./actionType";
 
+// Login Actions
 export function login(data) {
   return (dispatch) => {
     const url = apiUrls.login();
@@ -23,21 +27,45 @@ function loginSuccess(response) {
   };
 }
 
-function loginFailed(error) {
+function loginFailed(response) {
   return {
     type: LOGIN_FAILED,
-    error: error.error,
+    error: response.error,
   };
-  console.log(error);
 }
 
+// Logout Actions
+export function logout() {
+  return (dispatch) => {
+    const url = apiUrls.logout();
+    axios
+      .get(url)
+      .then(() => dispatch(logoutSuccess()))
+      .catch((error) => dispatch(logoutFailed(error.response.data)));
+  };
+}
+
+function logoutSuccess() {
+  return {
+    type: LOGOUT_SUCCESS,
+  };
+}
+
+function logoutFailed(response) {
+  return {
+    type: LOGOUT_FAILED,
+    error: response.error,
+  };
+}
+
+// Authenticating - Getting User Detail
 export function getUserDetail() {
   return (dispatch) => {
     const url = apiUrls.getUser();
     axios
       .get(url)
       .then((response) => dispatch(getUserDetailSuccess(response)))
-      .catch((error) => console.log(error));
+      .catch((error) => dispatch(getUserDetailFailed(error.response.data)));
   };
 }
 
@@ -45,5 +73,12 @@ function getUserDetailSuccess(response) {
   return {
     type: GET_USER_DETAIL_SUCCESS,
     userDetail: response.data.user,
+  };
+}
+
+function getUserDetailFailed(response) {
+  return {
+    type: GET_USER_DETAIL_FAILED,
+    error: response.error,
   };
 }

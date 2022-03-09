@@ -1,10 +1,11 @@
 const express = require("express");
 const Router = express.Router();
-const { login, signup, getUserDetail } = require("../controllers/user");
+const { login, signup, logout, getUserDetail } = require("../controllers/user");
 const { isLoggedIn } = require("../middlewares/user");
 
 Router.route("/login").post(login);
 Router.route("/signup").post(signup);
+Router.route("/logout").get(logout);
 Router.route("/getuser").get(isLoggedIn, getUserDetail);
 
 Router.route("/testdata").post(function (req, res) {

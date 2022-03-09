@@ -74,9 +74,7 @@ exports.login = BigPromise(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(
-      new Error("Email & Password are required.")
-    );
+    return next(new Error("Email & Password are required."));
   }
 
   // Check User in DB
@@ -96,16 +94,21 @@ exports.login = BigPromise(async (req, res, next) => {
   // If passoword does not match
 
   if (!isValidPassword) {
-    return next(
-      new Error("Password is incorrect.")
- 
-    );
+    return next(new Error("Password is incorrect."));
   }
 
   // If Password is valid
 
   cookietoken(user, res);
+});
 
+exports.logout = BigPromise(async (req, res, next) => {
+  res.cookie(process.env.COOKIE_TOKEN_NAME, null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ success: true, message: "Successfully Logged out" });
 });
 
 exports.getUserDetail = BigPromise(async (req, res, next) => {

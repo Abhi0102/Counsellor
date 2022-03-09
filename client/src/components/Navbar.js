@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,6 +14,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Avatar } from "@mui/material";
+import { logout } from "../actions/user";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,8 +59,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+  const { isLoggedIn, userDetail } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -79,8 +85,37 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    handleMenuClose();
+  };
+
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
+  const renderMenu = isLoggedIn ? (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        Welcome {userDetail.name.split(" ")[0]}
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose} component={Link} to="/profile">
+        View Profile
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+    </Menu>
+  ) : (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
@@ -193,7 +228,11 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {isLoggedIn ? (
+                <Avatar alt="P" src={userDetail.photo.secure_url} />
+              ) : (
+                <AccountCircle />
+              )}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

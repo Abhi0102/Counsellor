@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // MUI Imports
 import {
@@ -9,22 +9,35 @@ import {
   TextField,
   Grid,
   Button,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../actions/user";
 
 function Login(props) {
-  // Handling For Submit
-  const [error, setError] = useState("");
+  // Getting Redux dispatch amd user state from store
   const dispatch = useDispatch();
+  const { error, isLoggedIn } = useSelector((state) => state.user);
+
+  // Getting Location and navigate to handle routing if user is logged in
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(from, { replace: true });
+    }
+  }, [isLoggedIn]);
+
+  // Handling Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     dispatch(login(data));
   };
+
   return (
     <Grid container justifyContent="center">
       <Grid item md={6} my={10}>
@@ -51,7 +64,11 @@ function Login(props) {
                 fullWidth
               />
 
-              {error}
+              {error && (
+                <Typography variant="caption" color="error">
+                  * {error}
+                </Typography>
+              )}
               <Button
                 type="submit"
                 variant="outlined"
