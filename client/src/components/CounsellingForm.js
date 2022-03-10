@@ -15,13 +15,17 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
-import TimePicker from "@mui/lab/TimePicker";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import React from "react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { apiUrls } from "../utils/apiUrls";
+import {
+  addCounsellorOffer,
+  deleteOffer,
+  getCounsellorOffer,
+  updateCounsellorOffer,
+} from "../actions/offer";
+import { testRoute } from "../actions/user";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -55,30 +59,37 @@ function getStyles(day, workingDays, theme) {
 
 function CounsellingForm(props) {
   const theme = useTheme();
+  const { isNew, data } = useSelector((state) => state.offer.counsellor);
+  const dispatch = useDispatch();
+  const handleDeleteOffer = (e) => {
+    dispatch(deleteOffer());
+  };
+
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      license: "",
-      description: "",
-      workingDays: [],
-      fromTime: "",
-      toTime: "",
-      expertise: "",
-      experience: "",
-      price: "",
+    initialValues: data,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      if (isNew) {
+        dispatch(addCounsellorOffer(values));
+      } else {
+        let changedData = {};
+        for (let i in values) {
+          if (values[i] !== data[i]) {
+            changedData[i] = values[i];
+          }
+        }
+        if (Object.keys(changedData).length) {
+          dispatch(updateCounsellorOffer(changedData));
+        }
+        // dispatch(testRoute(values));
+      }
     },
-    onSubmit: (values) =>
-      axios
-        .post(apiUrls.testRoute(), values)
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error)),
   });
   return (
     <Grid item md={6} xs={12} mb={5}>
       <Card>
         <CardHeader title="Counselling Form" />
         <CardContent>
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item md={6}>
@@ -230,9 +241,20 @@ function CounsellingForm(props) {
 
               <Grid item>
                 <Button type="submit" variant="outlined">
-                  Submit
+                  {isNew ? "Save" : "Update"}
                 </Button>
               </Grid>
+              {!isNew && (
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleDeleteOffer}
+                  >
+                    Delete
+                  </Button>
+                </Grid>
+              )}
             </Grid>
           </form>
           {/* </LocalizationProvider> */}

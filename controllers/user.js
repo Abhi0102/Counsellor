@@ -160,7 +160,7 @@ exports.updateUserDetail = BigPromise(async (req, res, next) => {
     }
   }
 
-  if (!newData) {
+  if (!Object.keys(newData).length) {
     return next(new Error("Nothing to update."));
   }
   const user = await User.findByIdAndUpdate(req.user.id, newData, {
@@ -170,4 +170,3 @@ exports.updateUserDetail = BigPromise(async (req, res, next) => {
 
   res.status(200).json({ success: true, user });
 });
-

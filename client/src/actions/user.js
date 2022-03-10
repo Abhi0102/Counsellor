@@ -160,7 +160,7 @@ function updateUserFailed(response) {
 export function testRoute(data) {
   return (dispatch) => {
     axios
-      .patch(apiUrls.updateUser(), data)
+      .post(apiUrls.testRoute(), data)
       .then((response) => {
         console.log(response);
       })

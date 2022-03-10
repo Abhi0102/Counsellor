@@ -8,7 +8,7 @@ function PrivateRoute(props) {
     return props.children;
   }
 
-  return <Navigate to="/" state={{ from: location }} />;
+  return <Navigate to="/login" state={{ from: location }} />;
 }
 
 export default PrivateRoute;

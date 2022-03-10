@@ -7,4 +7,8 @@ export const apiUrls = {
   testRoute: () => `${baseUrl}/testdata`,
   uploadPhoto: () => `${baseUrl}/uploadphoto`,
   updateUser: () => `${baseUrl}/updateuser`,
+  addOffer: () => `${baseUrl}/addoffer`,
+  getCounsellorOffer: () => `${baseUrl}/getcounselloroffer`,
+  deleteOffer: () => `${baseUrl}/deleteoffer`,
+  getUpdateOffer: () => `${baseUrl}/updateoffer`,
 };

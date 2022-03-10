@@ -1,6 +1,7 @@
 const BigPromise = require("./bigPromise");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+
 exports.isLoggedIn = BigPromise(async (req, res, next) => {
   const token = req.cookies[process.env.COOKIE_TOKEN_NAME];
 
@@ -13,3 +14,14 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
   req.user = await User.findById(decode.id);
   next();
 });
+
+exports.customRole = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new Error("Access Denied. You are not authorize to access this route.")
+      );
+    }
+    next();
+  };
+};

@@ -16,6 +16,8 @@ import axios from "axios";
 import { uploadPhoto } from "../actions/user";
 import { useState } from "react";
 import CounsellingForm from "./CounsellingForm";
+import { useEffect } from "react";
+import { getCounsellorOffer } from "../actions/offer";
 
 const Input = styled("input")({
   display: "none",
@@ -23,18 +25,23 @@ const Input = styled("input")({
 
 function Profile(props) {
   const { userDetail } = useSelector((state) => state.user);
+  const isCounsellor = userDetail.role === "Counsellor";
   const [isOfferingCounselling, setIsOfferingCounselling] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(async () => {
+    if (isCounsellor) {
+      // Get Counsiling Detail
+      dispatch(getCounsellorOffer());
+    }
+  }, []);
+
   const handlePicUpload = async (e) => {
     e.preventDefault();
     console.log(e.target.files[0]);
     let data = new FormData();
     data.append("photo", e.target.files[0]);
     await dispatch(uploadPhoto(data));
-    // axios
-    //   .patch("/api/v1/uploadphoto", data)
-    //   .then((response) => console.log(response))
-    //   .catch((error) => console.log(error.response));
   };
   return (
     <Grid container pt={15} alignContent="center" flexDirection="column">
@@ -64,14 +71,16 @@ function Profile(props) {
               </Grid>
 
               <ProfileForm />
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsOfferingCounselling(!isOfferingCounselling);
-                }}
-              >
-                Offer Counselling
-              </Button>
+              {isCounsellor && (
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOfferingCounselling(!isOfferingCounselling);
+                  }}
+                >
+                  Offer Counselling
+                </Button>
+              )}
             </Grid>
           </CardContent>
         </Card>

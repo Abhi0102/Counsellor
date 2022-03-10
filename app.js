@@ -27,10 +27,12 @@ app.use(morgan("tiny"));
 // Routes
 
 const user = require("./routes/user");
+const offer = require("./routes/offer");
 
 //Route Middleware
 
 app.use("/api/v1", user);
+app.use("/api/v1", offer);
 
 app.use(errorHandler);
 
