@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ProfileForm from "./ProfileForm";
 import axios from "axios";
 import { uploadPhoto } from "../actions/user";
+import { useState } from "react";
+import CounsellingForm from "./CounsellingForm";
 
 const Input = styled("input")({
   display: "none",
@@ -21,6 +23,7 @@ const Input = styled("input")({
 
 function Profile(props) {
   const { userDetail } = useSelector((state) => state.user);
+  const [isOfferingCounselling, setIsOfferingCounselling] = useState(false);
   const dispatch = useDispatch();
   const handlePicUpload = async (e) => {
     e.preventDefault();
@@ -34,8 +37,8 @@ function Profile(props) {
     //   .catch((error) => console.log(error.response));
   };
   return (
-    <Grid container pt={15} justifyContent="center">
-      <Grid item md={6} xs={12} mb={10}>
+    <Grid container pt={15} alignContent="center" flexDirection="column">
+      <Grid item md={6} xs={12} mb={5}>
         <Card>
           <CardHeader title="User Profile" />
           <CardContent>
@@ -61,28 +64,20 @@ function Profile(props) {
               </Grid>
 
               <ProfileForm />
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsOfferingCounselling(!isOfferingCounselling);
+                }}
+              >
+                Offer Counselling
+              </Button>
             </Grid>
           </CardContent>
         </Card>
       </Grid>
+      {isOfferingCounselling && <CounsellingForm />}
     </Grid>
-    // <Grid container pt={15} justifyContent="center">
-    //   <Grid item md={6} sm={12} xs={12}>
-    //     <Card>
-    //       <CardHeader title="User Profile" />
-    //       <CardContent>
-    //         <Avatar
-    //           alt="P"
-    //           src={userDetail.photo.secure_url}
-    //           sx={{ width: 150, height: 150 }}
-    //         />
-    //         <Typography variant="subtitle2">Name</Typography>
-    //         <Typography>{userDetail.name}</Typography>
-    //         <TextField />
-    //       </CardContent>
-    //     </Card>
-    //   </Grid>
-    // </Grid>
   );
 }
 

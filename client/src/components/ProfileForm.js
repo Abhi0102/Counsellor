@@ -125,7 +125,6 @@ function ProfileForm(props) {
             label="Role"
             value={formik.values.role}
             onChange={formik.handleChange}
-            fullWidth
             disabled
           />
         </Grid>
