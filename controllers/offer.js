@@ -2,6 +2,7 @@ const BigPromise = require("../middlewares/bigPromise");
 const Offer = require("../models/offer");
 
 exports.addOffer = BigPromise(async (req, res, next) => {
+  // Extracting values from body
   const {
     title,
     license,
@@ -13,6 +14,8 @@ exports.addOffer = BigPromise(async (req, res, next) => {
     experience,
     price,
   } = req.body;
+
+  //   If null values fouund
 
   if (
     !title ||
@@ -32,12 +35,16 @@ exports.addOffer = BigPromise(async (req, res, next) => {
     );
   }
 
+  //   Fetching if product already present by user
+
   const offeredProduct = await Offer.find({ user: req.user.id });
 
+  //   If Product Found
   if (offeredProduct.length) {
     return next(new Error("User can offer only one option at a time."));
   }
 
+  //    Creating new Offer
   const offer = await Offer.create({
     title,
     license,
@@ -51,6 +58,7 @@ exports.addOffer = BigPromise(async (req, res, next) => {
     user: req.user.id,
   });
 
+  //    Selective response
   const data = {
     title: offer.title,
     license: offer.license,
@@ -65,13 +73,15 @@ exports.addOffer = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
+// Specific for Cousellor View
 exports.getCounsellorOffer = BigPromise(async (req, res, next) => {
   let offer = await Offer.findOne({ user: req.user.id });
-
+  // If No Offer Found
   if (!offer) {
     return next(new Error("No Offer Found."));
   }
-  //   offer = offer[0];
+
+  //   Sendinng Selective data
   const data = {
     title: offer.title,
     license: offer.license,
@@ -88,10 +98,13 @@ exports.getCounsellorOffer = BigPromise(async (req, res, next) => {
 
 exports.deleteCounsellorOffer = BigPromise(async (req, res, next) => {
   const offer = await Offer.findOne({ user: req.user.id });
+
+  //   If no data found to delete
   if (!offer) {
     return next(new Error("Nothing to delete."));
   }
 
+  //   Deleting offer
   await offer.remove();
   res
     .status(200)
@@ -99,17 +112,19 @@ exports.deleteCounsellorOffer = BigPromise(async (req, res, next) => {
 });
 
 exports.updateCounsellorOffer = BigPromise(async (req, res, next) => {
+  // New Data to avoid updating null values
   let newData = {};
   for (let i in req.body) {
     if (req.body[i]) {
       newData[i] = req.body[i];
     }
   }
-
+  //   If no data found to update.
   if (!Object.keys(newData).length) {
     return next(new Error("Nothing to update."));
   }
 
+  //   Update and send selective data
   const offer = await Offer.findOneAndUpdate({ user: req.user.id }, newData, {
     new: true,
     runValidators: true,
