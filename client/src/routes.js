@@ -36,7 +36,14 @@ export default function Router() {
           path: "/register",
           element: <Signup />,
         },
-        { path: "/counsellor/:id", element: <CounsellorDetail /> },
+        {
+          path: "/counsellor/:id",
+          element: (
+            <PrivateRoute>
+              <CounsellorDetail />
+            </PrivateRoute>
+          ),
+        },
       ],
     },
   ]);

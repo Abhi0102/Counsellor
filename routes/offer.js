@@ -8,6 +8,7 @@ const {
   deleteCounsellorOffer,
   updateCounsellorOffer,
   getOffers,
+  getOneOffer,
 } = require("../controllers/offer");
 const { isLoggedIn, customRole } = require("../middlewares/user");
 
@@ -38,5 +39,6 @@ Router.route("/updateoffer").patch(
 
 // View-User
 Router.route("/getoffers").get(getOffers);
+Router.route("/getofferdetail/:id").get(isLoggedIn, getOneOffer);
 
 module.exports = Router;

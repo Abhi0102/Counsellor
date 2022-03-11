@@ -147,7 +147,18 @@ exports.updateCounsellorOffer = BigPromise(async (req, res, next) => {
 exports.getOffers = BigPromise(async (req, res, next) => {
   const offers = await Offer.find().populate({
     path: "user",
-    select: ["name", "email", "qualification", "aboutme", "phno", "photo"],
+    select: ["name", "photo"],
   });
   res.status(200).json({ success: true, offers });
+});
+
+exports.getOneOffer = BigPromise(async (req, res, next) => {
+  const offer = await Offer.findById(req.params.id).populate({
+    path: "user",
+    select: ["name", "photo", "email", "qualification", "aboutme", "phno"],
+  });
+  if (!offer) {
+    return next(new Error("No offer found."));
+  }
+  res.status(200).json({ success: true, offer });
 });

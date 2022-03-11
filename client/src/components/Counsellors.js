@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function CounsellorCard({ offer }) {
-  console.log(offer);
   return (
     <Grid item xs={12} sm={4}>
       <Card sx={{ height: "100%" }} elevation={4}>
