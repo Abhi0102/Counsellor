@@ -2,6 +2,8 @@ import {
   DELETE_OFFER_SUCCESS,
   EMPTY_COUNSELLOR_OFFER,
   FILL_COUNSELLOR_OFFER,
+  GET_OFFERS_FAILED,
+  GET_OFFERS_SUCCESS,
 } from "../actions/actionType";
 
 const initialOfferState = {
@@ -19,6 +21,9 @@ const initialOfferState = {
       price: "",
     },
   },
+  success: false,
+  offers: [],
+  error: null,
 };
 export default function offer(state = initialOfferState, action) {
   switch (action.type) {
@@ -37,6 +42,22 @@ export default function offer(state = initialOfferState, action) {
         ...state,
         counsellor: initialOfferState.counsellor,
       };
+    case GET_OFFERS_SUCCESS:
+      return {
+        ...state,
+        offers: action.offers,
+        success: true,
+        error: null,
+      };
+
+    case GET_OFFERS_FAILED: {
+      return {
+        ...state,
+        offers: [],
+        success: false,
+        error: action.error,
+      };
+    }
     default:
       return state;
   }

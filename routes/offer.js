@@ -3,14 +3,20 @@ const express = require("express");
 const Router = express.Router();
 
 const {
-  addOffer,
+  addCounsellorOffer,
   getCounsellorOffer,
   deleteCounsellorOffer,
   updateCounsellorOffer,
+  getOffers,
 } = require("../controllers/offer");
 const { isLoggedIn, customRole } = require("../middlewares/user");
 
-Router.route("/addoffer").post(isLoggedIn, customRole("Counsellor"), addOffer);
+// Counsellor Specific
+Router.route("/addoffer").post(
+  isLoggedIn,
+  customRole("Counsellor"),
+  addCounsellorOffer
+);
 
 Router.route("/getcounselloroffer").get(
   isLoggedIn,
@@ -29,4 +35,8 @@ Router.route("/updateoffer").patch(
   customRole("Counsellor"),
   updateCounsellorOffer
 );
+
+// View-User
+Router.route("/getoffers").get(getOffers);
+
 module.exports = Router;

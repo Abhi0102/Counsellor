@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import Counsellors from "./Counsellors";
 
 const useStyles = makeStyles({
   backImg: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
 function Home(props) {
   const classes = useStyles();
   return (
-    <Grid container>
+    <Grid container direction="column">
       <Grid item className={classes.backImg}>
         <Box className={classes.introText}>
           <Typography variant="h4">Counsellor</Typography>
@@ -34,6 +35,9 @@ function Home(props) {
       </Grid>
       <Grid item mx={5} my={2}>
         <Typography variant="h4">Our Counsellors</Typography>
+      </Grid>
+      <Grid item mx={5}>
+        <Counsellors />
       </Grid>
     </Grid>
   );

@@ -92,7 +92,7 @@ function CounsellingForm(props) {
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item md={6}>
+              <Grid item md={6} sm={12} xs={12}>
                 <TextField
                   fullWidth
                   required
@@ -103,7 +103,7 @@ function CounsellingForm(props) {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={6} sm={12} xs={12}>
                 <TextField
                   fullWidth
                   required
@@ -114,7 +114,7 @@ function CounsellingForm(props) {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              <Grid item md={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <TextField
                   fullWidth
                   required
@@ -127,7 +127,7 @@ function CounsellingForm(props) {
                   rows={10}
                 />
               </Grid>
-              <Grid item md={12}>
+              <Grid item md={12} sm={12} xs={12}>
                 <FormControl fullWidth required>
                   <InputLabel id="workingDaysLabel">Working Days</InputLabel>
                   <Select
@@ -165,7 +165,7 @@ function CounsellingForm(props) {
                 </FormControl>
               </Grid>
 
-              <Grid item md={6}>
+              <Grid item md={6} sm={6} xs={6}>
                 <TextField
                   id="fromTime"
                   name="fromTime"
@@ -184,7 +184,7 @@ function CounsellingForm(props) {
                 />
               </Grid>
 
-              <Grid item md={6}>
+              <Grid item md={6} sm={6} xs={6}>
                 <TextField
                   id="toTime"
                   required
@@ -203,7 +203,7 @@ function CounsellingForm(props) {
                 />
               </Grid>
 
-              <Grid item md={6}>
+              <Grid item md={6} sm={12} xs={12}>
                 <TextField
                   fullWidth
                   required
@@ -214,7 +214,7 @@ function CounsellingForm(props) {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={6} sm={6} xs={6}>
                 <TextField
                   fullWidth
                   required
@@ -226,7 +226,7 @@ function CounsellingForm(props) {
                   onChange={formik.handleChange}
                 />
               </Grid>
-              <Grid item md={12}>
+              <Grid item md={12} sm={6} xs={6}>
                 <TextField
                   fullWidth
                   required

@@ -4,8 +4,11 @@ import {
   FILL_COUNSELLOR_OFFER,
   EMPTY_COUNSELLOR_OFFER,
   DELETE_OFFER_SUCCESS,
+  GET_OFFERS_SUCCESS,
+  GET_OFFERS_FAILED,
 } from "./actionType";
 
+// Counsellor Specific
 export function getCounsellorOffer() {
   return (dispatch) => {
     axios
@@ -78,7 +81,9 @@ export function addCounsellorOffer(data) {
     const url = apiUrls.addOffer();
     axios
       .post(url, data)
-      .then((response) => dispatch(fillCounsellorOffer(response.data.data)))
+      .then((response) => {
+        dispatch(fillCounsellorOffer(response.data.data));
+      })
       .catch((error) => console.log(error));
   };
 }
@@ -90,5 +95,31 @@ export function updateCounsellorOffer(data) {
       .patch(url, data)
       .then((response) => dispatch(fillCounsellorOffer(response.data.data)))
       .catch((error) => console.log(error.response.data));
+  };
+}
+
+// User Specific
+
+export function getOffers() {
+  return (dispatch) => {
+    const url = apiUrls.getOffers();
+    axios
+      .get(url)
+      .then((response) => dispatch(getOffersSuccess(response.data)))
+      .catch((error) => getOffersFailed(error.response.data));
+  };
+}
+
+function getOffersSuccess(response) {
+  return {
+    type: GET_OFFERS_SUCCESS,
+    offers: response.offers,
+  };
+}
+
+function getOffersFailed(response) {
+  return {
+    type: GET_OFFERS_FAILED,
+    error: response.error,
   };
 }

@@ -1,7 +1,8 @@
 const BigPromise = require("../middlewares/bigPromise");
 const Offer = require("../models/offer");
 
-exports.addOffer = BigPromise(async (req, res, next) => {
+// Specific for Cousellor
+exports.addCounsellorOffer = BigPromise(async (req, res, next) => {
   // Extracting values from body
   const {
     title,
@@ -73,7 +74,6 @@ exports.addOffer = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
-// Specific for Cousellor View
 exports.getCounsellorOffer = BigPromise(async (req, res, next) => {
   let offer = await Offer.findOne({ user: req.user.id });
   // If No Offer Found
@@ -141,4 +141,13 @@ exports.updateCounsellorOffer = BigPromise(async (req, res, next) => {
     price: offer.price,
   };
   res.status(200).json({ success: true, data });
+});
+
+// For User View
+exports.getOffers = BigPromise(async (req, res, next) => {
+  const offers = await Offer.find().populate({
+    path: "user",
+    select: ["name", "email", "qualification", "aboutme", "phno", "photo"],
+  });
+  res.status(200).json({ success: true, offers });
 });

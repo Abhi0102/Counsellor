@@ -38,7 +38,7 @@ function ProfileForm(props) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2} mt={1}>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <TextField
             fullWidth
             required
@@ -50,7 +50,7 @@ function ProfileForm(props) {
             inputProps={{ readOnly: readOnly }}
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <TextField
             required
             id="email"
@@ -63,7 +63,7 @@ function ProfileForm(props) {
             disabled
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <TextField
             required
             id="dob"
@@ -76,7 +76,7 @@ function ProfileForm(props) {
             fullWidth
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <TextField
             required
             id="qualification"
@@ -88,7 +88,7 @@ function ProfileForm(props) {
             fullWidth
           />
         </Grid>
-        <Grid item md={12}>
+        <Grid item md={12} sm={12} xs={12}>
           <TextField
             required
             id="aboutme"
@@ -103,7 +103,7 @@ function ProfileForm(props) {
             fullWidth
           />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <TextField
             required
             id="phno"
@@ -116,7 +116,7 @@ function ProfileForm(props) {
             fullWidth
           />
         </Grid>
-        <Grid item md={6} mb={2}>
+        <Grid item md={6} mb={2} sm={12} xs={12}>
           <TextField
             fullWidth
             required

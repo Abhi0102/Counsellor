@@ -11,4 +11,5 @@ export const apiUrls = {
   getCounsellorOffer: () => `${baseUrl}/getcounselloroffer`,
   deleteOffer: () => `${baseUrl}/deleteoffer`,
   getUpdateOffer: () => `${baseUrl}/updateoffer`,
+  getOffers: () => `${baseUrl}/getoffers`,
 };
