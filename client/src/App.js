@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUserDetail } from "./actions/user";
 import { getOffers } from "./actions/offer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +18,19 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
+        {/* <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        /> */}
+        {/* Same as */}
+        <ToastContainer />
         <Router />
       </BrowserRouter>
     </>

@@ -78,7 +78,7 @@ function Profile(props) {
                     setIsOfferingCounselling(!isOfferingCounselling);
                   }}
                 >
-                  Offer Counselling
+                  {isOfferingCounselling ? "Scroll Down" : "Offer Counselling"}
                 </Button>
               )}
             </Grid>

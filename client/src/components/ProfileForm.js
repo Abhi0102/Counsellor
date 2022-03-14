@@ -1,15 +1,17 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { Field, Form, Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { testRoute, updateUser } from "../actions/user";
+import { updateUser } from "../actions/user";
 
 function ProfileForm(props) {
   const [readOnly, setReadOnly] = useState(true);
   const { userDetail } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const { name, email, dob, qualification, aboutme, phno, role } = userDetail;
+  const { name, email, qualification, aboutme, phno, role } = userDetail;
+  let { dob } = userDetail;
+  dob = dob.split("T")[0];
 
   const formik = useFormik({
     initialValues: { name, email, dob, qualification, aboutme, phno, role },

@@ -98,7 +98,6 @@ exports.login = BigPromise(async (req, res, next) => {
 });
 
 exports.logout = BigPromise(async (req, res, next) => {
-
   // Deleting the cookies
   res.cookie(process.env.COOKIE_TOKEN_NAME, null, {
     expires: new Date(Date.now()),
@@ -109,10 +108,8 @@ exports.logout = BigPromise(async (req, res, next) => {
 });
 
 exports.getUserDetail = BigPromise(async (req, res, next) => {
-
   // Fetching User
   const user = await User.findById(req.user.id);
-
   res.status(200).json({
     success: true,
     user,
@@ -157,7 +154,6 @@ exports.updateProfilePic = BigPromise(async (req, res, next) => {
 });
 
 exports.updateUserDetail = BigPromise(async (req, res, next) => {
-  
   // Initializing newData to avoid updating value to null
   let newData = {};
   for (let i in req.body) {
@@ -181,3 +177,7 @@ exports.updateUserDetail = BigPromise(async (req, res, next) => {
 
   res.status(200).json({ success: true, user });
 });
+
+// Change Password
+
+// Forgot Password

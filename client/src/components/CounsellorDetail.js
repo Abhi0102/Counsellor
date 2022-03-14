@@ -9,24 +9,48 @@ import {
   Rating,
   Avatar,
   Button,
+  TextField,
+  Box,
 } from "@mui/material";
-import { height } from "@mui/system";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
+import { toast } from "react-toastify";
+
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { apiUrls } from "../utils/apiUrls";
 
+// The Function Loads Razorpay script
+function loadRazorpay() {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    document.body.appendChild(script);
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => resolve(false);
+  });
+}
+
 function CounsellorDetail(props) {
+  const navigate = useNavigate();
   const params = useParams();
+  // Loading Page while fetching offer detail
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
   const [offer, setOffer] = useState();
+  const [counsellingDate, setCounsellingDate] = useState();
+
+  // Fetching offer Details
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(apiUrls.getOneOffer(params.id))
+      .get(apiUrls.offerDetail(params.id))
       .then((response) => {
         setOffer(response.data.offer);
         setIsLoading(false);
@@ -36,6 +60,58 @@ function CounsellorDetail(props) {
         setIsLoading(false);
       });
   }, []);
+
+  // Function to initiate payment
+  async function checkoutRazorpay(paymentInfo) {
+    // Loading Razorpay script
+    const res = await loadRazorpay();
+    if (!res) {
+      alert("Failed to load Razorpay");
+    }
+
+    // Razorpay options
+    const options = {
+      key: paymentInfo.key, // Getting from Backend
+      amount: paymentInfo.order.amount, // Getting from Backend
+      currency: "INR",
+      name: "Counsellor",
+      description: "Test Transaction",
+      order_id: paymentInfo.order.id, // Getting from Backend
+      handler: function (response) {
+        // On Success Payment Update that in DB
+        axios
+          .post(apiUrls.confirmPayment(), response)
+          .then((response) => {
+            toast.success("Payment Successful.");
+            navigate("/orders");
+          })
+          .catch((error) => {
+            toast.error(error.response.data);
+          });
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  }
+
+  // Handling Submit
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    // Creating Offer
+    axios
+      .post(apiUrls.offerDetail(params.id), data)
+      .then((response) => checkoutRazorpay(response.data))
+      .catch((error) => toast.error(error.response.data));
+  };
+
+  // Disable Non-Working Days
+  const disableDate = (date) => {
+    const day = date.toLocaleString("en-us", { weekday: "long" });
+    return !offer.workingDays.includes(day);
+  };
 
   return (
     <Grid container my={10}>
@@ -106,9 +182,32 @@ function CounsellorDetail(props) {
                   Fees - Rs. {offer.price}
                 </Typography>
 
-                <Button variant="outlined" color="success">
-                  Book Now
-                </Button>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Box component="form" onSubmit={handleSubmit}>
+                    <DatePicker
+                      label="Counselling Date *"
+                      shouldDisableDate={disableDate}
+                      id="counsellingDate"
+                      value={counsellingDate}
+                      onChange={(counsellingDate) => {
+                        setCounsellingDate(counsellingDate);
+                      }}
+                      minDate={Date.now()}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          name="counsellingDate"
+                          {...params}
+                        />
+                      )}
+                    />
+
+                    <Button fullWidth type="submit" variant="outlined">
+                      Book Now
+                    </Button>
+                  </Box>
+                </LocalizationProvider>
               </Stack>
             </CardContent>
           </Card>

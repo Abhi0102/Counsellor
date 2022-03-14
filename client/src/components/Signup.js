@@ -53,8 +53,8 @@ function Signup(props) {
   };
 
   return (
-    <Grid container justifyContent="center">
-      <Grid item md={6} my={10}>
+    <Grid container pt={15} justifyContent="center">
+      <Grid item md={6} mb={5}>
         <Card elevation={4}>
           <CardHeader title="Register" />
           <CardContent>

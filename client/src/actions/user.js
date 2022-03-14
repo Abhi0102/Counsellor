@@ -14,6 +14,7 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
 } from "./actionType";
+import { toast } from "react-toastify";
 
 // Login Actions
 export function login(data) {
@@ -27,6 +28,7 @@ export function login(data) {
 }
 
 function loginSuccess(response) {
+  toast.success("Successfully Logged In");
   return {
     type: LOGIN_SUCCESS,
     userDetail: response.data.user,
@@ -34,6 +36,7 @@ function loginSuccess(response) {
 }
 
 function loginFailed(response) {
+  toast.error(response.error);
   return {
     type: LOGIN_FAILED,
     error: response.error,
@@ -70,15 +73,17 @@ export function signup(data) {
     axios
       .post(url, data)
       .then((response) => dispatch(signupSuccess(response)))
-      .catch((error) => dispatch(signupFailed(error.response.data)));
+      .catch((error) => signupFailed(error.response.data));
   };
 }
 
 function signupSuccess(response) {
+  toast.success("Successfully Registered.");
   return { type: SIGNUP_SUCCESS, userDetail: response.data.user };
 }
 
 function signupFailed(response) {
+  toast.error(response.error);
   return {
     type: SIGNUP_FAILED,
     error: response.error,
@@ -120,6 +125,7 @@ export function uploadPhoto(data) {
 }
 
 function uploadPhotoSuccess(response) {
+  toast.success("Successfully Updated.");
   return {
     type: UPLOAD_PHOTO_SUCCESS,
     photo: response.data.photo,
@@ -127,6 +133,7 @@ function uploadPhotoSuccess(response) {
 }
 
 function uploadPhotoFailed(response) {
+  toast.error(response.error);
   return {
     type: UPLOAD_PHOTO_FAILED,
     error: response.error,
@@ -144,6 +151,7 @@ export function updateUser(data) {
 }
 
 function updateUserSuccess(response) {
+  toast.success("Successfully Updated.");
   return {
     type: UPDATE_USER_SUCCESS,
     userDetail: response.data.user,
@@ -151,6 +159,7 @@ function updateUserSuccess(response) {
 }
 
 function updateUserFailed(response) {
+  toast.error(response.error);
   return {
     type: UPDATE_USER_FAILED,
     error: response.error,

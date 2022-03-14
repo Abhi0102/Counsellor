@@ -7,6 +7,7 @@ import {
   GET_OFFERS_SUCCESS,
   GET_OFFERS_FAILED,
 } from "./actionType";
+import { toast } from "react-toastify";
 
 // Counsellor Specific
 export function getCounsellorOffer() {
@@ -54,12 +55,16 @@ export function deleteOffer() {
     const url = apiUrls.deleteOffer();
     axios
       .delete(url)
-      .then((response) => dispatch(deleteOfferSuccess()))
+      .then((response) => {
+        dispatch(deleteOfferSuccess());
+        dispatch(getOffers());
+      })
       .catch((error) => console.log(error));
   };
 }
 
 function deleteOfferSuccess() {
+  toast.success("Successfully Deleted.");
   return {
     type: DELETE_OFFER_SUCCESS,
     data: {
@@ -82,9 +87,13 @@ export function addCounsellorOffer(data) {
     axios
       .post(url, data)
       .then((response) => {
-        dispatch(fillCounsellorOffer(response.data.data));
+        {
+          toast.success("Successfully Updated.");
+          dispatch(fillCounsellorOffer(response.data.data));
+          dispatch(getOffers());
+        }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(error.response.data.error));
   };
 }
 
@@ -93,8 +102,12 @@ export function updateCounsellorOffer(data) {
     const url = apiUrls.getUpdateOffer();
     axios
       .patch(url, data)
-      .then((response) => dispatch(fillCounsellorOffer(response.data.data)))
-      .catch((error) => console.log(error.response.data));
+      .then((response) => {
+        toast.success("Successfully Updated.");
+        dispatch(fillCounsellorOffer(response.data.data));
+        dispatch(getOffers());
+      })
+      .catch((error) => toast.error(error.response.data.error));
   };
 }
 

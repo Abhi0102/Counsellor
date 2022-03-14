@@ -26,8 +26,9 @@ const Search = styled("div")(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
+  marginLeft: 10,
+
+  width: "40%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -194,7 +195,7 @@ export default function Navbar() {
             component={Link}
             to="/home"
             className="a-title"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { xs: "block", sm: "block" } }}
           >
             COUNSELLOR
           </Typography>
