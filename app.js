@@ -16,7 +16,7 @@ const swaggerDocument = YAML.load("./swagger.yaml");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload({ useTempFiles: true, tempFileDir: "/temp/" }));
+app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(cookieParser());
 
 // Swagger Document Middleware
