@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const errorHandler = require("./middlewares/errorHandler");
 const app = express();
+const path = require("path");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
@@ -39,7 +40,6 @@ app.use("/api/v1", order);
 app.use(errorHandler);
 
 app.use(express.static("client/build"));
-
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
