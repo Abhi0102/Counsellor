@@ -39,9 +39,12 @@ app.use("/api/v1", order);
 
 app.use(errorHandler);
 
-// app.use(express.static("client/build"));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// });
+// Comment in Local Mode
+// After Scripts
+// "proxy": "http://localhost:8000",
+app.use(express.static("client/build"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
 
 module.exports = app;
