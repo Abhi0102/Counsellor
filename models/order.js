@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const orderSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
+    ref: "User",
     required: true,
   },
   offer: {
     type: mongoose.Schema.ObjectId,
+    ref: "Offer",
     required: true,
   },
   paymentInfo: {

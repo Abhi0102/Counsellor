@@ -83,3 +83,60 @@ exports.confirmPayment = BigPromise(async (req, res, next) => {
 
   res.status(200).json({ success: true, message: "Payment Successfull." });
 });
+
+exports.getOrders = BigPromise(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id })
+    .populate({
+      path: "offer",
+      select: [
+        "title",
+        "description",
+        "fromTime",
+        "toTime",
+        "price",
+        "ratings",
+        "noOfReviews",
+        "reviews",
+        "user",
+      ],
+      populate: {
+        path: "user",
+        select: ["name"],
+      },
+    })
+    .sort({ counsellingDate: "desc" });
+
+  return res.status(200).json({ success: true, orders });
+});
+
+exports.addReview = BigPromise(async (req, res, next) => {
+  const { comment, rating, orderId } = req.body;
+  if (!comment || !rating || !orderId) {
+    return next(new Error("Comment, Rating & Order Id are required."));
+  }
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    {
+      review: { rating: Number(rating), comment },
+    },
+    { new: true }
+  );
+
+  const offer = await Offer.findById(order.offer);
+
+  offer.reviews.push({
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  });
+  offer.noOfReviews = offer.reviews.length;
+
+  offer.ratings =
+    offer.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    offer.reviews.length;
+
+  await offer.save({ validateBeforeSave: false });
+
+  res.status(200).json({ success: true });
+});

@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Profile from "./components/Profile";
 import PrivateRoute from "./utils/PrivateRoute";
 import CounsellorDetail from "./components/CounsellorDetail";
+import MyOrders from "./components/MyOrders";
 
 export default function Router() {
   return useRoutes([
@@ -35,6 +36,14 @@ export default function Router() {
         {
           path: "/register",
           element: <Signup />,
+        },
+        {
+          path: "/myorders",
+          element: (
+            <PrivateRoute>
+              <MyOrders />
+            </PrivateRoute>
+          ),
         },
         {
           path: "/counsellor/:id",

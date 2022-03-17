@@ -12,6 +12,7 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -170,6 +171,7 @@ export default function Navbar() {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
+
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -219,6 +221,17 @@ export default function Navbar() {
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              component={Link}
+              to="/myorders"
+              //   aria-label="show 17 new notifications"
+              color="inherit"
+            >
+              {/* <Badge badgeContent={17} color="error"> */}
+              <LocalMallIcon />
+              {/* </Badge> */}
             </IconButton>
             <IconButton
               size="large"

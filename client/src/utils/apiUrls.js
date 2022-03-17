@@ -14,4 +14,6 @@ export const apiUrls = {
   getOffers: () => `${baseUrl}/getoffers`,
   offerDetail: (id) => `${baseUrl}/getofferdetail/${id}`,
   confirmPayment: () => `${baseUrl}/confirmpayment`,
+  getMyOrders: () => `${baseUrl}/myorders`,
+  addReview: () => `${baseUrl}/addreview`,
 };

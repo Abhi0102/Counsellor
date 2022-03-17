@@ -83,7 +83,7 @@ function CounsellorDetail(props) {
           .post(apiUrls.confirmPayment(), response)
           .then((response) => {
             toast.success("Payment Successful.");
-            navigate("/orders");
+            navigate("/myorders");
           })
           .catch((error) => {
             toast.error(error.response.data);
@@ -115,7 +115,7 @@ function CounsellorDetail(props) {
 
   return (
     <Grid container my={10}>
-      <Grid item md={12} mx={6}>
+      <Grid item md={12} mx={2}>
         {isLoading ? (
           <CircularProgress />
         ) : error ? (
@@ -123,94 +123,126 @@ function CounsellorDetail(props) {
             {error}
           </Typography>
         ) : (
-          <Card elevation={4}>
-            <CardHeader title={offer.title} />
-            <CardContent>
-              <Stack>
-                <Avatar
-                  alt="P"
-                  src={offer.user.photo.secure_url}
-                  sx={{ height: 200, width: 200, alignSelf: "center" }}
-                />
-                <Typography variant="h6" textAlign="center" mt={2}>
-                  {offer.user.name}
-                </Typography>
-                <Rating
-                  readOnly
-                  value={offer.ratings}
-                  sx={{ alignSelf: "center" }}
-                />
-                <Typography variant="caption" textAlign="center">
-                  Rated By - {offer.noOfReviews}
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Experience - {offer.experience} Years
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Expertise In - {offer.expertise}
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Registered License - {offer.license}
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Working Timings - {offer.fromTime} - {offer.toTime}
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Working Days - {offer.workingDays.map((day) => day + ", ")}
-                </Typography>
-                <Typography variant="caption" textAlign="center">
-                  Contact On - {offer.user.email} | +91-{offer.user.phno}
-                </Typography>
-                <Typography variant="h6" my={3}>
-                  About Counselling Session
-                </Typography>
-                <Typography variant="subtitle1" textAlign="justify">
-                  {offer.description}
-                </Typography>
-                <Typography variant="h6" my={3}>
-                  About Counsellor
-                </Typography>
-                <Typography variant="subtitle1" textAlign="justify">
-                  {offer.user.aboutme}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  my={3}
-                  textAlign="center"
-                  color="warning.main"
-                >
-                  Fees - Rs. {offer.price}
-                </Typography>
+          <>
+            <Card elevation={4}>
+              <CardHeader title={offer.title} />
+              <CardContent>
+                <Stack>
+                  <Avatar
+                    alt="P"
+                    src={offer.user.photo.secure_url}
+                    sx={{ height: 200, width: 200, alignSelf: "center" }}
+                  />
+                  <Typography variant="h6" textAlign="center" mt={2}>
+                    {offer.user.name}
+                  </Typography>
+                  <Rating
+                    readOnly
+                    value={offer.ratings}
+                    sx={{ alignSelf: "center" }}
+                  />
+                  <Typography variant="caption" textAlign="center">
+                    Rated By - {offer.noOfReviews}
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Experience - {offer.experience} Years
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Expertise In - {offer.expertise}
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Registered License - {offer.license}
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Working Timings - {offer.fromTime} - {offer.toTime}
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Working Days - {offer.workingDays.map((day) => day + ", ")}
+                  </Typography>
+                  <Typography variant="caption" textAlign="center">
+                    Contact On - {offer.user.email} | +91-{offer.user.phno}
+                  </Typography>
+                  <Typography variant="h6" my={3}>
+                    About Counselling Session
+                  </Typography>
+                  <Typography variant="subtitle1" textAlign="justify">
+                    {offer.description}
+                  </Typography>
+                  <Typography variant="h6" my={3}>
+                    About Counsellor
+                  </Typography>
+                  <Typography variant="subtitle1" textAlign="justify">
+                    {offer.user.aboutme}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    my={3}
+                    textAlign="center"
+                    color="warning.main"
+                  >
+                    Fees - Rs. {offer.price}
+                  </Typography>
 
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Box component="form" onSubmit={handleSubmit}>
-                    <DatePicker
-                      label="Counselling Date *"
-                      shouldDisableDate={disableDate}
-                      id="counsellingDate"
-                      value={counsellingDate}
-                      onChange={(counsellingDate) => {
-                        setCounsellingDate(counsellingDate);
-                      }}
-                      minDate={Date.now()}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          margin="normal"
-                          name="counsellingDate"
-                          {...params}
-                        />
-                      )}
-                    />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Box component="form" onSubmit={handleSubmit}>
+                      <DatePicker
+                        label="Counselling Date *"
+                        shouldDisableDate={disableDate}
+                        id="counsellingDate"
+                        value={counsellingDate}
+                        onChange={(counsellingDate) => {
+                          setCounsellingDate(counsellingDate);
+                        }}
+                        minDate={Date.now()}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            name="counsellingDate"
+                            {...params}
+                          />
+                        )}
+                      />
 
-                    <Button fullWidth type="submit" variant="outlined">
-                      Book Now
-                    </Button>
-                  </Box>
-                </LocalizationProvider>
-              </Stack>
-            </CardContent>
-          </Card>
+                      <Button fullWidth type="submit" variant="outlined">
+                        Book Now
+                      </Button>
+                    </Box>
+                  </LocalizationProvider>
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card sx={{ mt: 2 }}>
+              <CardContent>
+                <Typography variant="h5">Reviews</Typography>
+
+                {offer.reviews.length === 0 ? (
+                  <Typography variant="caption" mt={3}>
+                    Not yet Reviewed
+                  </Typography>
+                ) : (
+                  offer.reviews.map((review) => (
+                    <Box
+                      className="review-box"
+                      key={offer.reviews.indexOf(review)}
+                    >
+                      <Rating size="small" readOnly value={review.rating} />
+                      <Typography component="h6" variant="caption">
+                        {review.comment}
+                      </Typography>
+                      <Typography
+                        component="h6"
+                        variant="caption"
+                        textAlign="right"
+                      >
+                        ~ {review.name}
+                      </Typography>
+                    </Box>
+                  ))
+                )}
+              </CardContent>
+            </Card>
+          </>
         )}
       </Grid>
     </Grid>
