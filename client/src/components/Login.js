@@ -20,7 +20,7 @@ import { useState } from "react";
 
 function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(isLoading);
+
   // Getting Redux dispatch amd user state from store
   const dispatch = useDispatch();
   const { error, isLoggedIn } = useSelector((state) => state.user);
