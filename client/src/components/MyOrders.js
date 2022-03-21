@@ -6,6 +6,10 @@ import {
   Button,
   Rating,
   TextField,
+  Chip,
+  Stack,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import axios from "axios";
 import React from "react";
@@ -39,13 +43,26 @@ function OneOrder({ order }) {
           <Typography variant="h6" mt={3} textAlign="right">
             Counselling Date: {order.counsellingDate.split("T")[0]}
           </Typography>
-          <Typography component="h5" variant="subtitle" textAlign="right">
-            Payment Status: {order.paymentInfo.status}
-          </Typography>
-          <br />
-          <Typography component="h5" variant="subtitle" textAlign="right">
-            Session Status: {order.counsellingStatus}
-          </Typography>
+          <Stack direction="row" spacing={1} justifyContent="flex-end">
+            <Chip
+              label={`Payment: ${order.paymentInfo.status}`}
+              color={order.paymentInfo.status === "Paid" ? "success" : "error"}
+              variant="filled"
+              size="small"
+            />
+            <Chip
+              label={`Session: ${order.counsellingStatus}`}
+              color={
+                order.counsellingStatus === "Pending"
+                  ? "error"
+                  : order.counsellingStatus === "Completed"
+                  ? "success"
+                  : "warning"
+              }
+              variant="filled"
+              size="small"
+            />
+          </Stack>
 
           {order.review ? (
             <>
@@ -96,20 +113,43 @@ function OneOrder({ order }) {
 
 function MyOrders(props) {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(apiUrls.getMyOrders())
-      .then((response) => setOrders(response.data.orders))
-      .catch((error) => console.log(error.response.data));
+      .then((response) => {
+        setOrders(response.data.orders);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
-    <Grid container pt={15} px={3} direction="column" spacing={2}>
-      <Typography variant="h4">My Orders</Typography>
-      {orders.map((order) => (
-        <OneOrder order={order} key={order._id} />
-      ))}
+    <Grid container pt={15} px={3} direction="column" spacing={2} mb={10}>
+      {isLoading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <>
+          <Typography variant="h4">My Sessions</Typography>
+          {orders.length === 0 ? (
+            <Typography variant="subtitle2" color="text.secondary">
+              No Data Found
+            </Typography>
+          ) : (
+            orders.map((order) => <OneOrder order={order} key={order._id} />)
+          )}
+        </>
+      )}
     </Grid>
   );
 }

@@ -37,7 +37,6 @@ exports.bookOffer = BigPromise(async (req, res, next) => {
   //   Initiate Payment
   req.body.price = offer.price;
   const payment = await initiatePayment(req, res, next);
-  console.log(payment);
 
   //   If Order Created on Razorpay
   if (!payment.success) {
@@ -61,12 +60,6 @@ exports.confirmPayment = BigPromise(async (req, res, next) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
     req.body;
 
-  //   console.log(razorpay_order_id);
-  const test_order = await Order.findOne({
-    "paymentInfo.orderId": razorpay_order_id,
-  });
-
-  console.log(test_order);
   const order = await Order.findOneAndUpdate(
     {
       "paymentInfo.orderId": razorpay_order_id,
@@ -109,6 +102,15 @@ exports.getOrders = BigPromise(async (req, res, next) => {
   return res.status(200).json({ success: true, orders });
 });
 
+// Consellor Get Details of User
+exports.getBookings = BigPromise(async (req, res, next) => {
+  const offer = await Offer.findOne({ user: req.user._id });
+  const bookings = await Order.find({ offer: offer._id }).populate({
+    path: "user",
+  });
+  res.status(200).json({ success: true, bookings });
+});
+
 exports.addReview = BigPromise(async (req, res, next) => {
   const { comment, rating, orderId } = req.body;
   if (!comment || !rating || !orderId) {
@@ -139,4 +141,13 @@ exports.addReview = BigPromise(async (req, res, next) => {
   await offer.save({ validateBeforeSave: false });
 
   res.status(200).json({ success: true });
+});
+
+exports.updateCounsellingStatus = BigPromise(async (req, res, next) => {
+  const { counsellingStatus, orderId } = req.body;
+  if (!orderId || !counsellingStatus) {
+    return next(new Error("Counselling Status and Order Id are required."));
+  }
+  await Order.findByIdAndUpdate(orderId, { counsellingStatus });
+  res.status(200).json({ success: true, message: " Successfully Updated" });
 });

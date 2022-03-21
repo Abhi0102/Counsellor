@@ -6,6 +6,8 @@ import Profile from "./components/Profile";
 import PrivateRoute from "./utils/PrivateRoute";
 import CounsellorDetail from "./components/CounsellorDetail";
 import MyOrders from "./components/MyOrders";
+import MyBookings from "./components/MyBookings";
+import Page404 from "./components/Page404";
 
 export default function Router() {
   return useRoutes([
@@ -46,6 +48,14 @@ export default function Router() {
           ),
         },
         {
+          path: "/mybookings",
+          element: (
+            <PrivateRoute>
+              <MyBookings />
+            </PrivateRoute>
+          ),
+        },
+        {
           path: "/counsellor/:id",
           element: (
             <PrivateRoute>
@@ -55,5 +65,6 @@ export default function Router() {
         },
       ],
     },
+    { path: "*", element: <Page404 /> },
   ]);
 }

@@ -11,6 +11,7 @@ import {
   Button,
   TextField,
   Box,
+  Backdrop,
 } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -116,8 +117,13 @@ function CounsellorDetail(props) {
   return (
     <Grid container my={10}>
       <Grid item md={12} mx={2}>
-        {isLoading ? (
-          <CircularProgress />
+        {isLoading   ? (
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
         ) : error ? (
           <Typography variant="h6" color="text.secondary">
             {error}
