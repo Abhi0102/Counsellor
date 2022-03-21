@@ -10,13 +10,17 @@ import {
   Grid,
   Button,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../actions/user";
+import { useState } from "react";
 
 function Login(props) {
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(isLoading);
   // Getting Redux dispatch amd user state from store
   const dispatch = useDispatch();
   const { error, isLoggedIn } = useSelector((state) => state.user);
@@ -34,8 +38,10 @@ function Login(props) {
   // Handling Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
-    dispatch(login(data));
+    await dispatch(login(data));
+    setIsLoading(false);
   };
 
   return (
@@ -74,8 +80,9 @@ function Login(props) {
                 variant="outlined"
                 sx={{ mt: 3, mb: 2 }}
                 fullWidth
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? <CircularProgress /> : "Login"}
               </Button>
 
               <Button
@@ -85,6 +92,7 @@ function Login(props) {
                 sx={{ mb: 2 }}
                 fullWidth
                 color="error"
+                disabled={isLoading}
               >
                 Register
               </Button>

@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -24,6 +25,7 @@ const Input = styled("input")({
 });
 
 function Signup(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [internalError, setInternalError] = useState("");
   const [pic, setPic] = useState("");
   const dispatch = useDispatch();
@@ -41,15 +43,18 @@ function Signup(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     setInternalError("");
     const data = new FormData(event.currentTarget);
 
     if (data.get("password") !== data.get("confirmPassword")) {
       setInternalError("Password & Confirm Password does not matches.");
+      setIsLoading(false);
       return;
     }
 
-    dispatch(signup(data));
+    await dispatch(signup(data));
+    setIsLoading(false);
   };
 
   return (
@@ -183,8 +188,9 @@ function Signup(props) {
                 variant="outlined"
                 sx={{ mt: 3, mb: 2 }}
                 fullWidth
+                disabled={isLoading}
               >
-                Register
+                {isLoading ? <CircularProgress /> : "Register"}
               </Button>
 
               <Button
@@ -194,6 +200,7 @@ function Signup(props) {
                 sx={{ mb: 2 }}
                 fullWidth
                 color="error"
+                disabled={isLoading}
               >
                 Login
               </Button>

@@ -7,6 +7,12 @@ import { getUserDetail } from "./actions/user";
 import { getOffers } from "./actions/offer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./components/Footer";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { ThemeProvider } from "@mui/styles";
+
+const theme = createTheme();
 
 function App() {
   const dispatch = useDispatch();
@@ -17,21 +23,12 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        {/* <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        /> */}
-        {/* Same as */}
-        <ToastContainer />
-        <Router />
+        <ThemeProvider theme={theme}>
+          <Navbar />
+          <ToastContainer />
+          <Router />
+          {/* <Footer /> */}
+        </ThemeProvider>
       </BrowserRouter>
     </>
   );
