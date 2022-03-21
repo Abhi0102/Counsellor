@@ -67,6 +67,7 @@ function logoutFailed(response) {
   };
 }
 
+// Signup
 export function signup(data) {
   return (dispatch) => {
     const url = apiUrls.signup();
@@ -89,6 +90,7 @@ function signupFailed(response) {
     error: response.error,
   };
 }
+
 // Authenticating - Getting User Detail
 export function getUserDetail() {
   return (dispatch) => {
@@ -114,6 +116,7 @@ function getUserDetailFailed(response) {
   };
 }
 
+// Change Photo
 export function uploadPhoto(data) {
   return (dispatch) => {
     const url = apiUrls.uploadPhoto();
@@ -140,6 +143,7 @@ function uploadPhotoFailed(response) {
   };
 }
 
+// Change User Data
 export function updateUser(data) {
   return (dispatch) => {
     const url = apiUrls.updateUser();
@@ -166,6 +170,7 @@ function updateUserFailed(response) {
   };
 }
 
+// Test Route
 export function testRoute(data) {
   return (dispatch) => {
     axios

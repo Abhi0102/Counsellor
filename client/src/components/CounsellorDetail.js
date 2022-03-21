@@ -43,6 +43,7 @@ function CounsellorDetail(props) {
   const params = useParams();
   // Loading Page while fetching offer detail
   const [isLoading, setIsLoading] = useState(true);
+  // Error If Any
   const [error, setError] = useState();
   const [offer, setOffer] = useState();
   const [counsellingDate, setCounsellingDate] = useState();
@@ -50,6 +51,7 @@ function CounsellorDetail(props) {
   // Fetching offer Details
   useEffect(() => {
     setIsLoading(true);
+    // Making API Call here as the data is not required to store in redux
     axios
       .get(apiUrls.offerDetail(params.id))
       .then((response) => {
@@ -117,7 +119,7 @@ function CounsellorDetail(props) {
   return (
     <Grid container my={10}>
       <Grid item md={12} mx={2}>
-        {isLoading   ? (
+        {isLoading ? (
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={isLoading}

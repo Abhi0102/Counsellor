@@ -2,8 +2,8 @@ const BigPromise = require("../middlewares/bigPromise");
 const { v4: uuidv4 } = require("uuid");
 const Razorpay = require("razorpay");
 
+// Generate order in razorpay
 exports.initiatePayment = BigPromise(async (req, res, next) => {
-  console.log(req.body, req.params.id);
   //   console.log(user);
 
   const instance = new Razorpay({

@@ -17,16 +17,13 @@ import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { apiUrls } from "../utils/apiUrls";
 import {
   addCounsellorOffer,
   deleteOffer,
-  getCounsellorOffer,
   updateCounsellorOffer,
 } from "../actions/offer";
-import { testRoute } from "../actions/user";
 
+// Menu Styling
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -48,6 +45,7 @@ const days = [
   "Sunday",
 ];
 
+// Menu Style
 function getStyles(day, workingDays, theme) {
   return {
     fontWeight:
@@ -59,19 +57,26 @@ function getStyles(day, workingDays, theme) {
 
 function CounsellingForm(props) {
   const theme = useTheme();
+  // isNew -> true- if counsellor in not listing offer
   const { isNew, data } = useSelector((state) => state.offer.counsellor);
   const dispatch = useDispatch();
+
+  // Handling Delete Offer
   const handleDeleteOffer = (e) => {
     dispatch(deleteOffer());
   };
 
+  // Formik to handle form inputs
   const formik = useFormik({
     initialValues: data,
     enableReinitialize: true,
     onSubmit: (values) => {
+      // If new then add counsellor offer
       if (isNew) {
         dispatch(addCounsellorOffer(values));
       } else {
+        // Else Make Changes to the existing offer
+        // Extracting only changed fields
         let changedData = {};
         for (let i in values) {
           if (values[i] !== data[i]) {
@@ -81,7 +86,6 @@ function CounsellingForm(props) {
         if (Object.keys(changedData).length) {
           dispatch(updateCounsellorOffer(changedData));
         }
-        // dispatch(testRoute(values));
       }
     },
   });
@@ -90,6 +94,7 @@ function CounsellingForm(props) {
       <Card>
         <CardHeader title="Counselling Form" />
         <CardContent>
+          {/* Form */}
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item md={6} sm={12} xs={12}>

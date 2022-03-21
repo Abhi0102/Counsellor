@@ -26,6 +26,7 @@ const Input = styled("input")({
 
 function Signup(props) {
   const [isLoading, setIsLoading] = useState(false);
+
   const [internalError, setInternalError] = useState("");
   const [pic, setPic] = useState("");
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ function Signup(props) {
       return;
     }
 
-    await dispatch(signup(data));
+    dispatch(signup(data));
     setIsLoading(false);
   };
 

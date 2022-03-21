@@ -41,9 +41,7 @@ function Home(props) {
         <Grid item mx={5}>
           <Counsellors />
         </Grid>
-        {/* <Grid item md={12} sm={12} xs={12}> */}
 
-        {/* </Grid> */}
       </Grid>
       <Footer />
     </>

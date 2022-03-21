@@ -3,6 +3,7 @@ const Offer = require("../models/offer");
 const Order = require("../models/order");
 const { initiatePayment } = require("./payment");
 
+// To Book Session
 exports.bookOffer = BigPromise(async (req, res, next) => {
   // If conselling date is empty.
   if (!req.body.counsellingDate) {
@@ -56,6 +57,7 @@ exports.bookOffer = BigPromise(async (req, res, next) => {
   res.status(200).json(payment);
 });
 
+// On Payment Confirmation - Change Payment Status and add payment info in DB
 exports.confirmPayment = BigPromise(async (req, res, next) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
     req.body;
@@ -77,6 +79,7 @@ exports.confirmPayment = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, message: "Payment Successfull." });
 });
 
+// Get All Orders Along with reviews
 exports.getOrders = BigPromise(async (req, res, next) => {
   const orders = await Order.find({ user: req.user._id })
     .populate({
@@ -111,11 +114,14 @@ exports.getBookings = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, bookings });
 });
 
+// User Add Review
 exports.addReview = BigPromise(async (req, res, next) => {
   const { comment, rating, orderId } = req.body;
   if (!comment || !rating || !orderId) {
     return next(new Error("Comment, Rating & Order Id are required."));
   }
+
+  // Add Review in order
   const order = await Order.findByIdAndUpdate(
     orderId,
     {
@@ -124,6 +130,7 @@ exports.addReview = BigPromise(async (req, res, next) => {
     { new: true }
   );
 
+  // Add Review in offer
   const offer = await Offer.findById(order.offer);
 
   offer.reviews.push({
@@ -132,8 +139,10 @@ exports.addReview = BigPromise(async (req, res, next) => {
     rating: Number(rating),
     comment,
   });
+  // Change no. of reviews
   offer.noOfReviews = offer.reviews.length;
 
+  // Adjust Ratings
   offer.ratings =
     offer.reviews.reduce((acc, item) => item.rating + acc, 0) /
     offer.reviews.length;
@@ -143,6 +152,7 @@ exports.addReview = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
+// Counsellor Update Counselling Status
 exports.updateCounsellingStatus = BigPromise(async (req, res, next) => {
   const { counsellingStatus, orderId } = req.body;
   if (!orderId || !counsellingStatus) {

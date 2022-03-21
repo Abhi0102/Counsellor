@@ -2,6 +2,7 @@ const BigPromise = require("./bigPromise");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
+// Check User is Logged in or not and inject it in request if logged in
 exports.isLoggedIn = BigPromise(async (req, res, next) => {
   const token = req.cookies[process.env.COOKIE_TOKEN_NAME];
 
@@ -15,6 +16,7 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
   next();
 });
 
+// Check the role of user and respond accordingly
 exports.customRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

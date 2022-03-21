@@ -2,17 +2,15 @@ import React from "react";
 import {
   Card,
   Grid,
-  Typography,
   CardHeader,
   CardContent,
   Avatar,
-  TextField,
   Button,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileForm from "./ProfileForm";
-import axios from "axios";
+
 import { uploadPhoto } from "../actions/user";
 import { useState } from "react";
 import CounsellingForm from "./CounsellingForm";

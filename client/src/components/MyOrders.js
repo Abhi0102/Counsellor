@@ -17,11 +17,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { apiUrls } from "../utils/apiUrls";
 
+// One Order Card
 function OneOrder({ order }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
 
+//   Handling Add Review
   const handleAddReview = (e, id) => {
     e.preventDefault();
     setIsSubmit(!isSubmit);

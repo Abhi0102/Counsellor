@@ -5,9 +5,9 @@ info:
   version: 1.0.1
   contact:
     email: abhishek1sharma14.1998@gmail.com
-
+#
 servers:
-  - url: "{protocol}://localhost:8000/api/{version}"
+  - url: "{protocol}://{host}/api/{version}"
     description: Local host initial URL
     variables:
       version:
@@ -18,7 +18,12 @@ servers:
         enum:
           - http
           - https
-        default: http
+        default: https
+      host:
+        enum:
+          - localhost:8000
+          - counsellors.herokuapp.com
+        default: counsellors.herokuapp.com
 
 components:
   securitySchemes:
@@ -586,6 +591,257 @@ paths:
                   type: string
                 price:
                   type: string
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /getoffers:
+    get:
+      tags:
+        - Offer / Session Related Operations
+      summary: Get All Offers.
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                success:
+                  type: boolean
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /getofferdetail/{id}:
+    get:
+      tags:
+        - Offer / Session Related Operations
+      summary: Get One Offer.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of offer
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                success:
+                  type: boolean
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /myorders:
+    get:
+      tags:
+        - Order Related Operations
+      summary: Get List of All Orders.
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                success:
+                  type: boolean
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /mybookings:
+    get:
+      tags:
+        - Order Related Operations
+      summary: Get List of All Bookings for Counsellor.
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                success:
+                  type: boolean
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      description:
+                        type: string
+
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /addreview:
+    post:
+      tags:
+        - Order Related Operations
+      summary: User Can Add Review. Required- rating, comment, orderId
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                comment:
+                  type: string
+                rating:
+                  type: number
+
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        "422":
+          description: Some Error Occured.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+
+  /updatecounsellingstatus:
+    patch:
+      tags:
+        - Order Related Operations
+      summary: Counsellor Can update counselling status. - Pending, Completed & Cancelled
+      consumes:
+        - application/json
+      producers:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                counsellingStatus:
+                  type: string
+                  enum:
+                    - Completed
+                    - Pending
+                    - Cancelled
+                orderId:
+                  type: string
+
+      responses:
+        "200":
+          description: All Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
         "422":
           description: Some Error Occured.
           content:

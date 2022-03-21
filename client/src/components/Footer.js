@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
 
 import { Typography } from "@mui/material";
 
@@ -25,7 +24,7 @@ function Footer(props) {
       <Typography
         variant="caption"
         component="a"
-        href="https://google.com"
+        href="https://github.com/Abhi0102/Counsellor"
         target="_blank"
         className={classes.link}
       >

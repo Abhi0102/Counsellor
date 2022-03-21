@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Grid,
   Rating,
   Stack,
@@ -14,6 +13,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+// Single Card
 function CounsellorCard({ offer }) {
   return (
     <Grid item xs={12} sm={4}>
@@ -67,6 +67,7 @@ function CounsellorCard({ offer }) {
   );
 }
 
+// Collection of Counsellor Cards
 function Counsellors(props) {
   const { success, offers } = useSelector((state) => state.offer);
 

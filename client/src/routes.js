@@ -27,7 +27,6 @@ export default function Router() {
     },
     {
       path: "/",
-      //   element: <Home />,
       children: [
         { path: "", element: <Navigate to="/home" replace /> },
         { path: "/home", element: <Home /> },

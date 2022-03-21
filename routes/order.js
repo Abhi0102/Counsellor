@@ -13,6 +13,7 @@ const {
 
 const { isLoggedIn, customRole } = require("../middlewares/user");
 
+// Book Offer
 Router.route("/getofferdetail/:id").post(isLoggedIn, bookOffer);
 
 Router.route("/confirmpayment").post(isLoggedIn, confirmPayment);

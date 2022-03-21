@@ -24,11 +24,13 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+// Single Booking Card
 function OneBooking({ booking, handleStatusChange }) {
   const [counsellingStatus, setCounsellingStatus] = useState(
     booking.counsellingStatus
   );
 
+//   On Submit Status Change
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -142,16 +144,18 @@ function OneBooking({ booking, handleStatusChange }) {
   );
 }
 
+// Collection of Booking Cards
 function MyBookings(props) {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { userDetail } = useSelector((state) => state.user);
-  console.log(userDetail);
-  //   console.log(bookings);
+  
+  
   useEffect(() => {
     setIsLoading(true);
     if (userDetail.role === "User") {
+        // If not counsellor navigate to page404
       navigate("/Page404");
     }
     axios
@@ -166,6 +170,7 @@ function MyBookings(props) {
       });
   }, []);
 
+//   On Status change update state of component
   const handleStatusChange = (id, status) => {
     const tempBookings = [...bookings];
     tempBookings.map((booking) => {

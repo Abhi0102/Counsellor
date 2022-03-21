@@ -74,6 +74,7 @@ exports.addCounsellorOffer = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
+// Specific for Cousellor
 exports.getCounsellorOffer = BigPromise(async (req, res, next) => {
   let offer = await Offer.findOne({ user: req.user.id });
   // If No Offer Found
@@ -96,6 +97,7 @@ exports.getCounsellorOffer = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
+// Specific for Cousellor
 exports.deleteCounsellorOffer = BigPromise(async (req, res, next) => {
   const offer = await Offer.findOne({ user: req.user.id });
 
@@ -111,6 +113,7 @@ exports.deleteCounsellorOffer = BigPromise(async (req, res, next) => {
     .json({ success: true, message: "Offer Successfully Deleted." });
 });
 
+// Specific for Cousellor
 exports.updateCounsellorOffer = BigPromise(async (req, res, next) => {
   // New Data to avoid updating null values
   let newData = {};
@@ -143,7 +146,7 @@ exports.updateCounsellorOffer = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, data });
 });
 
-// For User View
+// For Landing Page - Get All Offers
 exports.getOffers = BigPromise(async (req, res, next) => {
   const offers = await Offer.find().populate({
     path: "user",
@@ -152,6 +155,7 @@ exports.getOffers = BigPromise(async (req, res, next) => {
   res.status(200).json({ success: true, offers });
 });
 
+// Get One Offer Based on the params
 exports.getOneOffer = BigPromise(async (req, res, next) => {
   const offer = await Offer.findById(req.params.id).populate({
     path: "user",
@@ -164,6 +168,3 @@ exports.getOneOffer = BigPromise(async (req, res, next) => {
 });
 
 // Temp Disable Offer
-
-
-

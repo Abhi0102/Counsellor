@@ -9,15 +9,17 @@ import {
 } from "./actionType";
 import { toast } from "react-toastify";
 
-// Counsellor Specific
+// Get Session Details if any (Counsellor Specific)
 export function getCounsellorOffer() {
   return (dispatch) => {
     axios
       .get(apiUrls.getCounsellorOffer())
       .then((response) => {
+        // On Success Fill Offer Form
         dispatch(fillCounsellorOffer(response.data.data));
       })
       .catch((error) => {
+        // If error log error and empty offer form
         console.log(error.response.data);
         dispatch(
           emptyCounsellorOffer({
@@ -50,6 +52,7 @@ function emptyCounsellorOffer(data) {
   };
 }
 
+// Delete Session offered by Counsellor (Counsellor Specific)
 export function deleteOffer() {
   return (dispatch) => {
     const url = apiUrls.deleteOffer();
@@ -81,6 +84,7 @@ function deleteOfferSuccess() {
   };
 }
 
+// Add Session Details
 export function addCounsellorOffer(data) {
   return (dispatch) => {
     const url = apiUrls.addOffer();
@@ -97,6 +101,7 @@ export function addCounsellorOffer(data) {
   };
 }
 
+// Update or Change data in session
 export function updateCounsellorOffer(data) {
   return (dispatch) => {
     const url = apiUrls.getUpdateOffer();
@@ -111,8 +116,7 @@ export function updateCounsellorOffer(data) {
   };
 }
 
-// User Specific
-
+// Get Offers to display on main page (Any User)
 export function getOffers() {
   return (dispatch) => {
     const url = apiUrls.getOffers();
