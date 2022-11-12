@@ -36,7 +36,7 @@ function Profile(props) {
 
   const handlePicUpload = async (e) => {
     e.preventDefault();
-    
+
     let data = new FormData();
     data.append("photo", e.target.files[0]);
     await dispatch(uploadPhoto(data));
