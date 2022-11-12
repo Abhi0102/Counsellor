@@ -13,7 +13,7 @@ exports.initiatePayment = BigPromise(async (req, res, next) => {
 
   const myOrder = await instance.orders.create({
     amount: req.body.price * 100,
-    currency: "AUD",
+    currency: "INR",
     receipt: uuidv4(),
   });
 
